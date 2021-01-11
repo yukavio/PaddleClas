@@ -75,7 +75,7 @@ class Sparse_Conv2D(_ConvNd):
             weight = self.weight.clone()
             weight = weight.abs()
             weight = weight.reshape([-1, self.group_size])
-            threshold = paddle.sort(weight, axis=1)[:, self.target_rate - 1].expand([self._in_channels, self._out_channels]).t()
+            threshold = paddle.sort(weight, axis=1)[:, self.target_rate - 1].expand([weight.shape[1], weight.shape[0]]).t()
             drop_mask = (weight > threshold)
             drop_mask = drop_mask.reshape(self.weight.shape)
 

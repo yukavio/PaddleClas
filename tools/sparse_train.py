@@ -123,7 +123,7 @@ def main(args):
         logger.info("Target Rate:{}  Drop Rate {}: Infer Sparse: {:.5} Real Sparse:".format(
             target_rate_dict[epoch_id], drop_rate_dict[epoch_id], float(Infer_sparse)
         ))
-        logger.info(Real_sparse)
+        logger.info([float(x) for x in Real_sparse])
         # 1. train with train dataset
         program.run(train_dataloader, config, net, optimizer, lr_scheduler,
                     epoch_id, 'train')
