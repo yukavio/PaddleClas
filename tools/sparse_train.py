@@ -47,11 +47,13 @@ def parse_args():
         default=[],
         help='config options to be overridden')
     parser.add_argument(
+        '-t',
         '--target_rate',
         type=int,
         default='0',
         help='remained weights per group')
     parser.add_argument(
+        '-g',
         '--group_size',
         type=int,
         default='16',
