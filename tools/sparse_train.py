@@ -114,7 +114,7 @@ def main(args):
     for epoch_id in range(last_epoch_id + 1, config.epochs):
         net.train()
         Real_sparse = []
-        for n, m in net.named_children():
+        for n, m in net.named_sublayers():
             if 'GroupSparse' in n:
                 m.set_target_rate(target_rate_dict[epoch_id])
                 m.set_drop_rate(drop_rate_dict[epoch_id])
