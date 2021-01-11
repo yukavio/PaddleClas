@@ -74,20 +74,16 @@ class Sparse_Conv2D(_ConvNd):
         with paddle.no_grad():
             weight = self.weight.clone()
             weight = weight.abs()
-            weight = weight.reshape([self._out_channels, self._in_channels])
-            weight = weight.t()
             weight = weight.reshape([-1, self.gruop_size])
-            threshold = paddle.sort(weight, axis=1)[:, self.target_rate - 1]
-            drop_mask = (weight > threshold[:, None])
-            drop_mask = drop_mask.reshape([self._in_channels, self._out_channels])
-            drop_mask = drop_mask.t()
+            threshold = paddle.sort(weight, axis=1)[:, self.target_rate - 1].expand([self._in_channels, self._out_channels]).t()
+            drop_mask = (weight > threshold)
             drop_mask = drop_mask.reshape(self.weight.shape)
 
         if self.training:
             with paddle.no_grad():
-                bernoulli_mask = paddle.full(drop_mask.shape, 1 - self.drop_rate)
+                bernoulli_mask = paddle.full(drop_mask.shape, self.drop_rate)
                 bernoulli_mask = paddle.bernoulli(bernoulli_mask)
-                bernoulli_mask[drop_mask] = 1
+                bernoulli_mask = paddle.less_equal(bernoulli_mask.astype(int), (bernoulli_mask * drop_mask).astype(int)).astype(bool)
         else:
             weight = self.weight * drop_mask
         out = F.conv._conv_nd(
@@ -115,13 +111,9 @@ class Sparse_Conv2D(_ConvNd):
         with paddle.no_grad():
             weight = self.weight.clone()
             weight = weight.abs()
-            weight = weight.reshape([self._out_channels, self._in_channels])
-            weight = weight.t()
-            weight = weight.reshape([-1, self.group_size])
-            threshold = paddle.sort(weight, axis=1)[:, self.target_rate - 1]
-            drop_mask = (weight > threshold[:, None])
-            drop_mask = drop_mask.reshape([self._in_channels, self._out_channels])
-            drop_mask = drop_mask.t()
+            weight = weight.reshape([-1, self.gruop_size])
+            threshold = paddle.sort(weight, axis=1)[:, self.target_rate - 1].expand([self._in_channels, self._out_channels]).t()
+            drop_mask = (weight > threshold)
             drop_mask = drop_mask.reshape(self.weight.shape)
             weight = self.weight * drop_mask
             sparsity = paddle.sum((weight == 0).astype(int)) / weight.numel()
