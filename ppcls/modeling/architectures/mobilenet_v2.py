@@ -206,7 +206,7 @@ class InvertedResidualUnit(nn.Layer):
                  filter_size, padding, expansion_factor, name):
         super(InvertedResidualUnit, self).__init__()
         num_expfilter = int(round(num_in_filter * expansion_factor))
-        self._expand_conv = Sparse_ConvBNLayer(
+        self._expand_conv = ConvBNLayer(
             num_channels=num_channels,
             num_filters=num_expfilter,
             filter_size=1,
@@ -225,7 +225,7 @@ class InvertedResidualUnit(nn.Layer):
             use_cudnn=False,
             name=name + "_dwise")
 
-        self._linear_conv = Sparse_ConvBNLayer(
+        self._linear_conv = ConvBNLayer(
             num_channels=num_expfilter,
             num_filters=num_filters,
             filter_size=1,
