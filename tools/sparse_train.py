@@ -121,7 +121,7 @@ def main(args):
                 Real_sparse.append(m.get_real_sparsity())
                 Infer_sparse = m.get_infer_sparsity()
         logger.info("Target Rate:{}  Drop Rate {}: Infer Sparse: {:.5} Real Sparse:".format(
-            target_rate_dict[epoch_id], drop_rate_dict[epoch_id], Infer_sparse
+            target_rate_dict[epoch_id], drop_rate_dict[epoch_id], float(Infer_sparse)
         ))
         logger.info(Real_sparse)
         # 1. train with train dataset
