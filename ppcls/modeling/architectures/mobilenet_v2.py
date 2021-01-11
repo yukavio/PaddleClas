@@ -84,6 +84,7 @@ class Sparse_Conv2D(_ConvNd):
                 bernoulli_mask = paddle.full(drop_mask.shape, self.drop_rate)
                 bernoulli_mask = paddle.bernoulli(bernoulli_mask)
                 bernoulli_mask = paddle.less_equal(bernoulli_mask.astype(int), (bernoulli_mask * drop_mask).astype(int)).astype(bool)
+            weight = self.weight * bernoulli_mask
         else:
             weight = self.weight * drop_mask
         out = F.conv._conv_nd(
