@@ -115,7 +115,7 @@ def main(args):
         net.train()
         Real_sparse = []
         for n, m in net.named_sublayers():
-            if '_expand_conv' or '_linear_conv' in n:
+            if 'get_infer_sparsity' in dir(n):
                 m.set_target_rate(target_rate_dict[epoch_id])
                 m.set_drop_rate(drop_rate_dict[epoch_id])
                 Real_sparse.append(m.get_real_sparsity())
