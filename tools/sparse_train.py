@@ -96,19 +96,19 @@ def main(args):
     best_top1_acc = 0.0  # best top1 acc record
     best_top1_epoch = last_epoch_id
 
-target_rate_dict = []
-drop_rate_dict = []
-cur_drop_rate = 0.5
-cur_target_rate = 0
-step = int(config.epochs / 2 / (args.target_rate+1))
-rise_point = list(range(0, int(config.epochs/2), step))
-for i in range(0, config.epochs):
-    if i >= config.epochs/2:
-        cur_drop_rate += 0.5 / (config.epochs/2)      
-    if i in rise_point[1:]:
-        cur_target_rate += 1
-    drop_rate_dict.append(cur_drop_rate)   
-    target_rate_dict.append(cur_target_rate)
+    target_rate_dict = []
+    drop_rate_dict = []
+    cur_drop_rate = 0.5
+    cur_target_rate = 0
+    step = int(config.epochs / 2 / (args.target_rate+1))
+    rise_point = list(range(0, int(config.epochs/2), step))
+    for i in range(0, config.epochs):
+        if i >= config.epochs/2:
+            cur_drop_rate += 0.5 / (config.epochs/2)      
+        if i in rise_point[1:]:
+            cur_target_rate += 1
+        drop_rate_dict.append(cur_drop_rate)   
+        target_rate_dict.append(cur_target_rate)
         
 
     for epoch_id in range(last_epoch_id + 1, config.epochs):
