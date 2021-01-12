@@ -114,12 +114,16 @@ def main(args):
     for epoch_id in range(last_epoch_id + 1, config.epochs):
         net.train()
         Real_sparse = []
+        flag=True
         for n, m in net.named_sublayers():
             if 'get_infer_sparsity' in dir(m):
                 m.set_target_rate(target_rate_dict[epoch_id])
                 m.set_drop_rate(drop_rate_dict[epoch_id])
                 Real_sparse.append(m.get_real_sparsity())
                 Infer_sparse = m.get_infer_sparsity()
+                if flag:
+                    flag=False
+                    m.print_grad()
         logger.info("Target Rate:{}  Drop Rate {}: Infer Sparse: {:.5} Real Sparse:".format(
             target_rate_dict[epoch_id], drop_rate_dict[epoch_id], float(Infer_sparse)
         ))
