@@ -75,8 +75,8 @@ class Sparse_Conv2D(_ConvNd):
             weight = self.weight.clone()
             weight = weight.abs()
             weight = weight.reshape([-1, self.group_size])
-            threshold = paddle.sort(weight, axis=1)[:, self.target_rate - 1].expand([weight.shape[1], weight.shape[0]]).t()
-            drop_mask = (weight > threshold)
+            threshold = paddle.sort(weight, axis=1)[:, self.target_rate].expand([weight.shape[1], weight.shape[0]]).t()
+            drop_mask = (weight >= threshold)
             drop_mask = drop_mask.reshape(self.weight.shape)
 
         if self.training:
@@ -113,8 +113,8 @@ class Sparse_Conv2D(_ConvNd):
             weight = self.weight.clone()
             weight = weight.abs()
             weight = weight.reshape([-1, self.group_size])
-            threshold = paddle.sort(weight, axis=1)[:, self.target_rate - 1].expand([weight.shape[1], weight.shape[0]]).t()
-            drop_mask = (weight > threshold)
+            threshold = paddle.sort(weight, axis=1)[:, self.target_rate].expand([weight.shape[1], weight.shape[0]]).t()
+            drop_mask = (weight >= threshold)
             drop_mask = drop_mask.reshape(self.weight.shape)
             weight = self.weight * drop_mask
             sparsity = float(paddle.sum((weight == 0).astype(int))) / float(weight.numel())
