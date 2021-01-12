@@ -117,14 +117,17 @@ class Sparse_Conv2D(_ConvNd):
             drop_mask = (weight > threshold)
             drop_mask = drop_mask.reshape(self.weight.shape)
             weight = self.weight * drop_mask
-            sparsity = paddle.sum((weight == 0).astype(int)) / weight.numel()
+            sparsity = float(paddle.sum((weight == 0).astype(int))) / float(weight.numel())
         return sparsity
 
     def get_real_sparsity(self, threashold=1e-6):
         with paddle.no_grad():
             weight =  self.weight.clone()
-            weight = paddle.sum(((weight-0)<threashold).astype(int)) / weight.numel()
+            weight = float(paddle.sum(((weight-0)<threashold).astype(int))) / float(weight.numel())
         return weight
+    
+    def print_grad(self):
+        print(self.weight.gradient)
 
 class Sparse_ConvBNLayer(nn.Layer):
     def __init__(self,
