@@ -100,8 +100,8 @@ def main(args):
     drop_rate_dict = []
     cur_drop_rate = 0.5
     cur_target_rate = 0
-    step = int(config.epochs / 2 / (args.target_rate+1))
-    rise_point = list(range(0, int(config.epochs/2), step))
+    step = config.epochs / 2 / (args.target_rate+1)
+    rise_point = [int(x*step) for x in range(args.target_rate+1)]
     for i in range(0, config.epochs):
         if i >= config.epochs/2:
             cur_drop_rate += 0.5 / (config.epochs/2)      
@@ -119,11 +119,8 @@ def main(args):
             if 'get_infer_sparsity' in dir(m):
                 m.set_target_rate(target_rate_dict[epoch_id])
                 m.set_drop_rate(drop_rate_dict[epoch_id])
-                Real_sparse.append(m.get_real_sparsity())
+                Real_sparse.append(m.get_real_sparsity(1e-10))
                 Infer_sparse = m.get_infer_sparsity()
-                if flag:
-                    flag=False
-                    m.print_grad()
         logger.info("Target Rate:{}  Drop Rate {}: Infer Sparse: {:.5} Real Sparse:".format(
             target_rate_dict[epoch_id], drop_rate_dict[epoch_id], float(Infer_sparse)
         ))
