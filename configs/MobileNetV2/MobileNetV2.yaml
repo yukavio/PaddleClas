@@ -29,9 +29,9 @@ OPTIMIZER:
 
 TRAIN:
     batch_size: 256
-    num_workers: 4
-    file_list: "./dataset/ILSVRC2012/train_list.txt"
-    data_dir: "./dataset/ILSVRC2012/"
+    num_workers: 6
+    file_list: "../data/ILSVRC2012/train_list.txt"
+    data_dir: "../data/ILSVRC2012/train"
     shuffle_seed: 0
     transforms:
         - DecodeImage:
@@ -53,9 +53,9 @@ TRAIN:
 
 VALID:
     batch_size: 64
-    num_workers: 4
-    file_list: "./dataset/ILSVRC2012/val_list.txt"
-    data_dir: "./dataset/ILSVRC2012/"
+    num_workers: 6
+    file_list: "../data/ILSVRC2012/val_list.txt"
+    data_dir: "../data/ILSVRC2012/val"
     shuffle_seed: 0
     transforms:
         - DecodeImage:
