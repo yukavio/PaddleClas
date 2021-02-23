@@ -31,7 +31,7 @@ TRAIN:
     batch_size: 256
     num_workers: 6
     file_list: "../data/ILSVRC2012/train_list.txt"
-    data_dir: "../data/ILSVRC2012/train"
+    data_dir: "../data/ILSVRC2012"
     shuffle_seed: 0
     transforms:
         - DecodeImage:
@@ -55,7 +55,7 @@ VALID:
     batch_size: 64
     num_workers: 6
     file_list: "../data/ILSVRC2012/val_list.txt"
-    data_dir: "../data/ILSVRC2012/val"
+    data_dir: "../data/ILSVRC2012"
     shuffle_seed: 0
     transforms:
         - DecodeImage:

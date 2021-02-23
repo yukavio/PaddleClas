@@ -1,1 +1,1 @@
-nohup sh tools/run_quant.sh &
+nohup sh tools/run_sparse.sh &
